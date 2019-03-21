@@ -30,6 +30,10 @@
 			<a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
 		</p>
 	</canvas>
+	<div id="takePicture">
+    <button onclick="takePicture()">Save Image</button>
+		<img id="pictureTaken">
+	</div>
 	<script type="text/javascript" src="jsmpg.js"></script>
 	<script type="text/javascript">
 		// Show loading notice
@@ -41,6 +45,17 @@
 		// Setup the WebSocket connection and start the player
 		var client = new WebSocket('ws://' + window.location.hostname + ':${WS_PORT}/');
 		var player = new jsmpeg(client, {canvas:canvas});
+
+		function putImage() {
+			var image;
+			if (canvas.getContext) {
+				// if you don't use replace, you get a DOM18 exception
+				image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+				window.location.href=image; // it will save locally
+		  }
+		  var imageElement = document.getElementById("pictureTaken");
+		  imageElement.src = image;
+		}
 	</script>
 </body>
 </html>
